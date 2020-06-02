@@ -4,6 +4,7 @@ com\whpu\mall\web\controller\ProductServlet.class
 com\whpu\mall\common\Result.class
 com\whpu\mall\service\impl\CategoryServiceImpl.class
 com\whpu\mall\service\MemberService.class
+com\whpu\mall\web\controller\CartServlet.class
 com\whpu\mall\pojo\Orders.class
 com\whpu\mall\pojo\Item.class
 com\whpu\mall\dao\impl\ProductDaoImpl.class

@@ -192,6 +192,23 @@
             }
         })
 
+        //加入购物车
+        $("#cartBtn").click(function () {
+            $.ajax({
+                url:"/cart/addCart",
+                type:"post",
+                data:{"productId":id,"number": $("#num").val()},
+                success:function (data) {
+                    if(data.flag=true){
+                        $("#addToCartModal").modal("show");
+                    }
+                }
+
+
+        })
+        })
+
+
 
     })
 </script>

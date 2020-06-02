@@ -13,6 +13,7 @@ E:\ideaWorkSpace\mall\src\main\java\com\whpu\mall\pojo\Product.java
 E:\ideaWorkSpace\mall\src\main\java\com\whpu\mall\dao\impl\ProductDaoImpl.java
 E:\ideaWorkSpace\mall\src\main\java\com\whpu\mall\service\MemberService.java
 E:\ideaWorkSpace\mall\src\main\java\com\whpu\mall\common\PageBean.java
+E:\ideaWorkSpace\mall\src\main\java\com\whpu\mall\web\controller\CartServlet.java
 E:\ideaWorkSpace\mall\src\main\java\com\whpu\mall\web\controller\BaseServlet.java
 E:\ideaWorkSpace\mall\src\main\java\com\whpu\mall\service\impl\ProductServiceImpl.java
 E:\ideaWorkSpace\mall\src\main\java\com\whpu\mall\dao\CategoryDao.java

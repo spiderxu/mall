@@ -129,7 +129,7 @@
 			if(checkPhone()&&checkPwd()&&checkPwd2()){
 				//向服务器发送ajax请求提交手机账号和密码
 				$.ajax({
-					url:"/registServlet",
+					url:"/member/register",
 					data: $("#registForm").serialize(),  //提交表单中的数据
 					dataType:"json",
 					type:"post",
