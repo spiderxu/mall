@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="商城">
+    <meta name="description" content="">
+    <title>黑马商城-商品列表</title>
+
+    <link href="/plugins/zui/css/zui.css" rel="stylesheet">
+    <link href="/plugins/zui/css/zui-theme.css" rel="stylesheet">
+    <link href="/css/my.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="/plugins/zui/lib/ieonly/html5shiv.js"></script>
+    <script src="/plugins/zui/lib/ieonly/respond.js"></script>
+    <script src="/plugins/zui/lib/ieonly/excanvas.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+
+<div id="top"></div>
+
+
+<!-- 商品列表 -->
+<div class="wrapper" style="min-height: 500px">
+    <!-- 面包屑导航 -->
+    <ol class="breadcrumb">
+        <li>
+            <span class="breadcrumb-title">当前位置：</span>
+            <a href="/main">产品列表</a>
+        </li>
+        <li class="active" id="navicate"></li>
+    </ol>
+
+    <!-- 列表开始 -->
+    <div class="list">
+        <section class="cards cards-borderless cards-products row" id="list">
+
+        </section>
+
+        <div class="clearfix"
+             style="padding: 0 12px; border-top: 1px dotted #e5e5e5;">
+
+                <ul class="pager pull-right" style="margin:0;" id="pageNav">
+
+                </ul>
+                <div class='pull-right' style='height:32px;line-height:32px;margin-right:8px;'>共<strong id="totalSize">7</strong>项,<strong id="totalPage">1</strong>页,第<strong id="currentPage">1</strong>页</div>
+
+        </div>
+    </div>
+    <!-- /列表结束 -->
+</div>
+<!-- /商品列表 -->
+
+
+<div id="bottom"></div>
+
+<script src="/plugins/zui/lib/jquery/jquery.js"></script>
+<script src="/js/jquery.scrollUp.min.js"></script>
+<script src="/plugins/zui/js/zui.js"></script>
+<script src="/js/include.js"></script>
+<script src="/js/my.js"></script>
+
+<script>
+   $(function () {
+       //页面加载完成后，获取由top.html传过来的cate_id
+       var search=window.location.search;
+       var cate_id=search.split("=")[1];
+
+       navigate(cate_id);
+       //页面加载完后，分页展示第一页数据
+       load(cate_id,1,10);
+
+   })
+
+   //展示分页数据
+   function load(cate_id,currentPage,pageSize) {
+       $.ajax({
+           url :"/product/findPage",
+           data:{"categoryId":cate_id,"currentPage":currentPage,"pageSize":pageSize},
+           success:function (data) {  //当前分类的所有商品信息
+               //显示分页的商品信息开始
+               var contentHTML="";
+               for(var i=0;i<data.list.length;i++){
+                   var product=data.list[i];  //没有使用Result对象封装，直接将pageBean转成json
+                   contentHTML+='<div class="col-xs-2">\n' +
+                       '                <div class="card">\n' +
+                       '                    <a href="/product_detail.html?id='+product.id+'" target="_blank">\n' +
+                       '                        <img src="/img/'+product.thumbnail+'" alt="" />\n' +
+                       '                    </a>\n' +
+                       '                    <div class="card-heading">\n' +
+                       '                        <span class="pull-right price">￥'+product.price+' </span>\n' +
+                       '                        <a href="/product_detail.html?id='+product.id+'" target="_blank">'+product.name+'</a>\n' +
+                       '                    </div>\n' +
+                       '                </div>\n' +
+                       '            </div>';
+               }
+               $("#list").html(contentHTML);
+               //显示分页的商品信息结束
+
+               //显示分页条开始
+               $("#totalSize").html(data.totalCount);
+               $("#totalPage").html(data.totalPage);
+               $("#currentPage").html(data.currentPage);
+
+               var start;
+               var end;
+               if(data.totalPage<=10){
+                   start=1;
+                   end= data.totalPage;
+               }else{
+                   start=currentPage-5;
+                   end=currentPage+4;
+                   if(start<1){
+                       start=1;
+                       end=10;
+                   }
+
+                   if(end>data.totalPage){
+                       end=totalPage;
+                       start=end-9;
+                   }
+               }
+
+               var pageHTML='<li onclick="load('+cate_id+','+1+','+pageSize+')" ><a href="javascript:void(0)">首页</a></li>';
+               if(currentPage>1){
+                   pageHTML+='<li onclick="load('+cate_id+','+(currentPage-1)+','+pageSize+')" ><a href="javascript:void(0)">上一页</a></li>';
+               }
+
+               for(var i=1;i<=data.totalPage;i++){
+                   if(i==data.currentPage){ //设置高亮
+                       pageHTML+='<li onclick="load('+cate_id+','+i+','+pageSize+')" class="active"><a href="javascript:void(0)">'+i+'</a></li>';
+                   }else{
+                       pageHTML+='<li onclick="load('+cate_id+','+i+','+pageSize+')"><a href="javascript:void(0)">'+i+'</a></li>';
+                   }
+               }
+               if(currentPage<data.totalPage){
+                   pageHTML+='<li onclick="load('+cate_id+','+(currentPage+1)+','+pageSize+')"><a href="javascript:void(0)">下一页</a></li>';
+               }
+
+               pageHTML+='<li onclick="load('+cate_id+','+data.totalPage+','+pageSize+')" ><a href="javascript:void(0)">尾页</a></li>';
+
+               $("#pageNav").html(pageHTML);
+
+           }
+
+       })
+
+   }
+
+   //面包屑导航
+    function  navigate(cate_id) {
+       $.ajax({
+           url:"/product/findNavicate",
+           data:{"categoryId":cate_id},
+           success:function (data) {
+               $("#navicate").html(data.data);
+           }
+       })
+
+
+    }
+</script>
+</body>
+</html>
