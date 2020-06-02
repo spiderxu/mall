@@ -155,7 +155,7 @@
                 </div>
                 <div class="modal-footer">
                     <a href="/main.html" class="btn btn-primary">继续购物</a>
-                    <a href="/view_cart.html" class="btn btn-primary" style="min-width: 80px">立即结算</a>
+                    <a href="/view_cart.html" class="btn btn-primary" style="min-width: 80px">查看购物车</a>
                 </div>
             </div>
         </form>
@@ -199,7 +199,7 @@
                 type:"post",
                 data:{"productId":id,"number": $("#num").val()},
                 success:function (data) {
-                    if(data.flag=true){
+                    if(data.flag==true){
                         $("#addToCartModal").modal("show");
                     }
                 }

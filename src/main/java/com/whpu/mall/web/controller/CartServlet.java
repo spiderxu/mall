@@ -42,7 +42,27 @@ public class CartServlet extends BaseServlet {
         Result result=new Result(true,"添加成功");
         JsonUtil.writeJson(response,result);
 
+    }
 
+    /**
+     * 查看购物车内容
+     * @param request
+     * @param response
+     */
+    public void viewCart(HttpServletRequest request,HttpServletResponse response){
+        HttpSession session = request.getSession();
+        List<Product> cartItem = (List<Product>)session.getAttribute("cart");
 
+        Result result=new Result();
+        if(cartItem==null){
+            result.setFlag(false);
+            result.setMsg("购物车为空");
+        }else{
+            result.setFlag(true);
+            result.setData(cartItem);
+            result.setMsg("查询成功");
+        }
+
+        JsonUtil.writeJson(response,result);
     }
 }

@@ -43,7 +43,7 @@
                     </thead>
                     <tbody id="cart-list">
 
-                    <tr>
+                    <!--<tr>
                         <td><input type="checkbox" name="ids"/> </td>
                         <td style="width: 100px">
                             <a href="/product_detail?id=11">
@@ -72,39 +72,8 @@
                         <td style="width: 120px" class="text-middle text-center">
                             <a href="/removeFromCart?id=11" class="deleter">删除</a>
                         </td>
-                    </tr>
-
-                    <!--<tr>
-                        <td><input type="checkbox"/> </td>
-                        <td style="width: 100px">
-                            <a href="/product_detail?id=13">
-                                <img src="/img/ipad.png" title="" alt=""/>
-                            </a>
-                        </td>
-                        <td class="text-left">
-                            <a href="/product_detail?id=13" class="media-wrapper">
-                                Apple iPad mini 4 平板电脑 7.9英寸
-                            </a>
-                            <input type="hidden" name="id" value="13"/></td>
-                        <td style="width: 100px">
-                            <div id="price">
-                                3288.00
-                            </div>
-                        </td>
-                        <td style="width: 140px">
-                            <div class="input-group">
-                                <span class="input-group-addon" onclick="minus(this)"><i class="icon icon-minus"></i></span>
-                                <input type="text" name="amount" id="amount" value="1" class="form-control" style="text-align: center;" onchange="change(this)"/>
-                                <span class="input-group-addon" onclick="plus(this)"><i class="icon icon-plus"></i></span>
-                            </div>
-                        </td>
-                        <td style="width: 160px" class="text-center text-middle">
-                            <strong class="text-danger" id="sum">3288.00</strong>
-                        </td>
-                        <td style="width: 120px" class="text-middle text-center">
-                            <a href="/removeFromCart?id=13" class="deleter">删除</a>
-                        </td>
                     </tr>-->
+
 
                     </tbody>
                 </table>
@@ -160,6 +129,59 @@
 <script src="/js/include.js"></script>
 <script src="/js/my.js"></script>
 
+<script>
+    $(function () {
+        //发送ajax查看购物车中的内容
+        $.ajax({
+            url:"/cart/viewCart",
+            type:"get",
+            success:function (data) {
+                if(data.flag==false){
+                    $("#cart-list").html(data.msg);
+                }else{
+                     var contentHTML="";
+                     for(var i=0;i<data.data.length;i++){
+                         var cartitem=data.data[i];
+                         contentHTML+='<tr>\n' +
+                             '                        <td><input type="checkbox" name="ids"/> </td>\n' +
+                             '                        <td style="width: 100px">\n' +
+                             '                            <a href="/product_detail.html?id='+cartitem.product.id+'">\n' +
+                             '                                <img src="/img/'+cartitem.product.thumbnail+'" title="" alt=""/>\n' +
+                             '                            </a>\n' +
+                             '                        </td>\n' +
+                             '                        <td class="text-left">\n' +
+                             '                            <a href="/product_detail.html?id='+cartitem.product.id+'" class="media-wrapper">\n' +
+                             '                                '+cartitem.product.name+'\n' +
+                             '                            </a>\n' +
+                             '                        <td style="width: 100px">\n' +
+                             '                            <div id="price">\n' +
+                             '                                '+cartitem.product.sale_price+'\n' +
+                             '                            </div>\n' +
+                             '                        </td>\n' +
+                             '                        <td style="width: 140px">\n' +
+                             '                            <div class="input-group">\n' +
+                             '                                <span class="input-group-addon" onclick="minus(this)" "><i class="icon icon-minus"></i></span>\n' +
+                             '                                <input type="text" name="amounts" id="amount" value="'+cartitem.number+'" class="form-control" style="text-align: center;"/>\n' +
+                             '                                <span class="input-group-addon" onclick="plus(this)" "><i class="icon icon-plus"></i></span>\n' +
+                             '                            </div>\n' +
+                             '                        </td>\n' +
+                             '                        <td style="width: 160px" class="text-center text-middle">\n' +
+                             '                            <strong class="text-danger" id="sum">'+(cartitem.number*cartitem.product.sale_price)+'</strong>\n' +
+                             '                        </td>\n' +
+                             '                        <td style="width: 120px" class="text-middle text-center">\n' +
+                             '                            <a href="/removeFromCart?id=11" class="deleter">删除</a>\n' +
+                             '                        </td>\n' +
+                             '                    </tr>';
+
+                     }
+                     $("#cart-list").html(contentHTML);
+                }
+
+                countSum();
+            }
+        })
+    })
+</script>
 
 <script>
 
@@ -169,7 +191,8 @@
         var countInput = $(component).prev('input'); //获取input元素
         var num = parseInt(countInput.val()) + 1; //获取input中的值并转化成整数再加上1
         countInput.val(num); //把值赋给input
-        countInput.change(); //触发change事件
+       // countInput.change(); //触发change事件
+        change(countInput);
 
     }
 
@@ -179,7 +202,8 @@
             return false;
         }
         countInput.val(parseInt(countInput.val()) - 1);
-        countInput.change(); //触发change事件
+        //countInput.change(); //触发change事件
+        change(countInput)
 
     }
 
