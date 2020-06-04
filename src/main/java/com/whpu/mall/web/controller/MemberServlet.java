@@ -43,12 +43,12 @@ public class MemberServlet extends BaseServlet {
         Result result=new Result();
         if(member==null){
             result.setFlag(false);
-            result.setData(null);
+            result.setData(member);
             result.setMsg("登录失败");
 
         }else{   //3.2登录成功
             result.setFlag(true);
-            result.setData(null);
+            result.setData(member);
             result.setMsg("登录成功");
             HttpSession session = request.getSession();
             session.setAttribute("member",member);
@@ -117,7 +117,7 @@ public class MemberServlet extends BaseServlet {
      * @throws IOException
      */
     public  void findNickName(HttpServletRequest request,HttpServletResponse response) throws IOException {
-
+        response.setContentType("application/json; charset=utf-8");
         HttpSession session=request.getSession();
         PrintWriter out=response.getWriter();
 
