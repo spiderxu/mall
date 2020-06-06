@@ -99,8 +99,8 @@
             type: "get",
             success:function (data) {
                 var contentHTMl='<li><a href="/main.html">首页</a></li>'
-                for(var i=0;i<data.data.length;i++){
-                    var category=data.data[i];
+                for(var i=0;i<data.length;i++){
+                    var category=data[i];
                     contentHTMl+='<li><a href="/product_list.html?cate_id='+category.id+'">'+category.name+'</a></li>'
                 }
                 contentHTMl+='<li><a href="/about.html">关于我们</a></li>';

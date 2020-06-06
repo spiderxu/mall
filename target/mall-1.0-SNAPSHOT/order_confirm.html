@@ -26,7 +26,7 @@
         <div class="panel-heading" style="font-size: 18px">
             <strong>结算</strong>
         </div>
-        <form action="/payment" method="post">
+        <form action="/pay" method="post" id="orderForm">
             <div class="panel-body">
                 <div id="addressBox">
                     <div id="addressTitle">
@@ -46,7 +46,7 @@
 
                 <br/> <br/>
                 <!--订单项列表-->
-                <form method="post">
+               <!-- <form method="post">-->
                     <div class="panel-body">
                         <table class="table">
                             <thead>
@@ -110,7 +110,7 @@
                         </table>
 
                     </div>
-                </form>
+             <!--   </form>-->
 
 
                 <div class="form-group">
@@ -202,7 +202,6 @@
       var ids=arr[0].split("=")[1];
       var amounts=arr[1].split("=")[1];
 
-
       $.ajax({
           url:"/order/confirmOrder",
           data:{"ids":ids,"amounts":amounts},
@@ -212,7 +211,7 @@
                   var cartItem=data.data[i];
                   orderHtml += '<tr>\n' +
                       '                                <td style="width: 100px">\n <input type="hidden" name="ids" value="' + cartItem.product.id + '"/> ' +
-                      '<input type="hidden" name="amounts" value="' + cartItem.number + '"'+
+                      '<input type="hidden" name="amounts" value="' + cartItem.number + '"/>'+
                   '                                    <a href="/product_detail.html?id=' + cartItem.product.id + '"><img src="/img/' + cartItem.product.thumbnail + '" title="" alt=""/></a>\n' +
                   '                                </td>\n' +
                   '                                <td class="text-left">\n' +
@@ -262,6 +261,21 @@
               }
           });
       });
+
+      //5.为提交订单按钮添加单击事件
+      $("#submit").click(function () {
+          $.ajax({
+              url:"/order/submitOrder",
+              data: $("#orderForm").serialize(),
+              type: "post",
+              success:function (data) {
+                  if(data.flag==true){
+                      window.location.href="/checkway.html?ordernumber="+data.data.number+"&payment_price="+data.data.payment_price;
+                  }
+
+              }
+          })
+      })
      
 
   })

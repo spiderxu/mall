@@ -33,4 +33,16 @@ public class OrderDaoImpl implements OrderDao {
         }
         return id;
     }
+
+    /**
+     * 更新订单状态
+     * @param status
+     * @param orderNumber
+     */
+    @Override
+    public void update(int status, String orderNumber) throws SQLException {
+        String sql="update orders set status= ? where Number = ?";
+        runner.update(sql,status,orderNumber);
+
+    }
 }

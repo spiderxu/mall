@@ -194,7 +194,7 @@
                         //获取要结算的商品编号
                         var ids=[];
                         var amounts=[];
-                        for(var i=0;i<$("input[name='ids']")[i].length;i++){
+                        for(var i=0;i<$("input[name='ids']").length;i++){
                             if($("input[name='ids']")[i].checked==true){
                                 ids.push($("input[name='ids']")[i].value);
                                 amounts.push($("input[name='amounts']")[i].value);
@@ -231,8 +231,6 @@
                          window.location.href="/order_confirm.html?ids="+ids+"&amounts="+amounts;
                      }
                 }
-
-
 
             })
         });

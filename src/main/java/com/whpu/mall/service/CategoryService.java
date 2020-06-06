@@ -10,4 +10,10 @@ public interface CategoryService {
      * @return
      */
     public List<Category> findAll();
+
+    /**
+     * 通过Redis优化，提升性能
+     * @return
+     */
+    public String findAllByRedis();
 }

@@ -11,6 +11,8 @@ import com.whpu.mall.pojo.Orders;
 import com.whpu.mall.pojo.Product;
 import com.whpu.mall.service.OrderService;
 
+import java.sql.SQLException;
+
 public class OrderServiceImpl implements OrderService {
 
     OrderDao orderDao=new OrderDaoImpl();
@@ -18,6 +20,12 @@ public class OrderServiceImpl implements OrderService {
     ItemDao itemDao=new ItemDaoImpl();
 
 
+    /**
+     * 添加订单
+     * @param orders
+     * @param ids
+     * @param amounts
+     */
     @Override
     public void add(Orders orders, String[] ids, String[] amounts) {
         //添加订单，同时将订单的id返回
@@ -35,6 +43,21 @@ public class OrderServiceImpl implements OrderService {
             item.setPayment_price(product.getSale_price()*Integer.parseInt(amounts[i]));
 
             itemDao.add(item);
+        }
+    }
+
+    /**
+     * 更新订单状态
+     * @param status
+     * @param orderNumber
+     */
+    @Override
+    public void update(int status, String orderNumber) {
+        try {
+            orderDao.update(status,orderNumber);
+        } catch (SQLException e) {
+            e.printStackTrace();
+
         }
     }
 }

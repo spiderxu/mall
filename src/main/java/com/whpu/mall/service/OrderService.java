@@ -10,4 +10,6 @@ public interface OrderService {
      * @param amounts
      */
     public void add(Orders orders,String[] ids,String[] amounts);
+
+    public void update(int status,String orderNumber);
 }

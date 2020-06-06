@@ -22,14 +22,11 @@ public class CategoryServlet extends BaseServlet {
      * 查找所有商品的分类
      * @return
      */
-    public void  findAll(HttpServletRequest request,HttpServletResponse response){
-        List<Category> list = categoryService.findAll();
-        Result result=new Result();
-        result.setFlag(true);
-        result.setMsg("查询成功");
-        result.setData(list);
+    public void  findAll(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=utf-8");
 
-        JsonUtil.writeJson(response,result);
+        String result = categoryService.findAllByRedis();
+        response.getWriter().print(result);
 
     }
 }
