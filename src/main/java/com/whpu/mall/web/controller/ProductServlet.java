@@ -80,4 +80,11 @@ public class ProductServlet extends BaseServlet {
         Result result=new Result(true,detail,"查询成功");
         JsonUtil.writeJson(response,result);
     }
+
+    /**
+     * 增加商品
+     */
+    public void add(HttpServletRequest request,HttpServletResponse response){
+
+    }
 }

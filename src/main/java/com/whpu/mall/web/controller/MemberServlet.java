@@ -32,31 +32,45 @@ public class MemberServlet extends BaseServlet {
      * @throws IOException
      */
     public void login(HttpServletRequest request,HttpServletResponse response) throws IOException {
-        //1。接收用户传过来的手机号和密码
-        String mobile = request.getParameter("mobile");
-        String pwd = request.getParameter("pwd");
 
-        //2.判断手机号和密码是否正确
-        Member member = memberService.login(mobile, pwd);
+        String code = request.getParameter("code");
+        //将验证码从session中取出
+        String vaidatecode = (String)request.getSession().getAttribute("vaidatecode");
+        //取出验证码后，就从session中销毁
+        request.getSession().removeAttribute("vaidatecode");
 
-        //3.1登录失败
-        Result result=new Result();
-        if(member==null){
+        if(vaidatecode!=null&&vaidatecode.equalsIgnoreCase(code)) {
+            //1。接收用户传过来的手机号和密码
+            String mobile = request.getParameter("mobile");
+            String pwd = request.getParameter("pwd");
+
+            //2.判断手机号和密码是否正确
+            Member member = memberService.login(mobile, pwd);
+
+            //3.1登录失败
+            Result result = new Result();
+            if (member == null) {
+                result.setFlag(false);
+                result.setData(member);
+                result.setMsg("登录失败");
+
+            } else {   //3.2登录成功
+                result.setFlag(true);
+                result.setData(member);
+                result.setMsg("登录成功");
+                HttpSession session = request.getSession();
+                session.setAttribute("member", member);
+
+            }
+            //转成json
+            JsonUtil.writeJson(response, result);
+        }else{
+            Result result = new Result();
+            result.setMsg("验证码出错");
             result.setFlag(false);
-            result.setData(member);
-            result.setMsg("登录失败");
-
-        }else{   //3.2登录成功
-            result.setFlag(true);
-            result.setData(member);
-            result.setMsg("登录成功");
-            HttpSession session = request.getSession();
-            session.setAttribute("member",member);
+            JsonUtil.writeJson(response,result);
 
         }
-
-        //转成json
-        JsonUtil.writeJson(response,result);
     }
 
     /**

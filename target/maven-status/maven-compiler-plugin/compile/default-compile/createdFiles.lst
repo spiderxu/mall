@@ -11,6 +11,7 @@ com\whpu\mall\dao\impl\AddressDaoImpl.class
 com\whpu\mall\service\AddressService.class
 com\whpu\mall\utils\JedisUtil.class
 com\whpu\mall\utils\Md5Util.class
+com\whpu\mall\web\controller\UploadServlet.class
 com\whpu\mall\dao\ItemDao.class
 com\whpu\mall\utils\JDBCUtils.class
 com\whpu\mall\dao\CategoryDao.class
@@ -40,6 +41,7 @@ com\whpu\mall\utils\DateUtil.class
 com\whpu\mall\dao\impl\MemberDaoImpl.class
 com\whpu\mall\dao\OrderDao.class
 com\whpu\mall\service\CategoryService.class
+com\whpu\mall\web\controller\ValidateCodeServlet.class
 com\whpu\mall\dao\impl\ItemDaoImpl.class
 com\whpu\mall\service\impl\MemberServiceImpl.class
 com\whpu\mall\service\OrderService.class

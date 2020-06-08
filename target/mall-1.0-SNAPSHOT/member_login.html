@@ -41,6 +41,10 @@
 								<div class="form-group">
 									<input type="password" name="pwd" id="pwd" value="" placeholder="请输入密码" class="form-control input-lg">
 								</div>
+								<div class="form-group">
+									<input type="text" name="code" id="code" value="" placeholder="请输入验证码" class="form-control input-lg">
+									<img src="/validate/code" onclick="changePic()" id="servercode"/>
+								</div>
 								<button type="button" class="btn btn-primary btn-wider btn-lg" id="btn_login">登录</button>
 								&nbsp; &nbsp;
 								<a href="/member_register.html">注册</a>
@@ -67,6 +71,11 @@
 	 <script src="/js/my.js"></script>
 
 	<script>
+		//生成验证码
+		function changePic(){
+			$("#servercode").attr("src","/validate/code?"+new Date())
+		}
+
 		// 校验手机号
 		function checkPhone() {
 			//获取页面当中输入框的值
@@ -117,7 +126,7 @@
                 	//向服务器发送ajax请求提交手机账号和密码
 					$.ajax({
 						url:"/member/login",
-						data:{"mobile":$("#mobile").val(),"pwd":$("#pwd").val()},  //提交表单中的数据
+						data:{"mobile":$("#mobile").val(),"pwd":$("#pwd").val(),"code":$("#code").val()},  //提交表单中的数据
 						dataType:"json",
 						type:"post",
 						success:function (data) {   //data表示后台返回的数据
@@ -126,13 +135,13 @@
 								window.location.href="main.html"
 							}else{
 								//登录失败
-								$("#formError").html("登录失败")
+								$("#formError").html(data.msg);
 							}
 						}
 
 					})
 				}else{
-                	$("formError").html("用户名或密码出错")
+                	$("formError").html(data.msg)
 				}
 			})
 		})
